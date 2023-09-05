@@ -1,10 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Login V1</title>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png"  th:href="@{/landlord/images/icons/favicon.ico}"/>
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/landlord/vendor/bootstrap/css/bootstrap.min.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"  th:href="@{/landlord/fonts/font-awesome-4.7.0/css/font-awesome.min.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" th:href="@{/landlord/vendor/animate/animate.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"  th:href="@{/landlord/vendor/css-hamburgers/hamburgers.min.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"  th:href="@{/landlord/vendor/select2/select2.min.css}">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css"  th:href="@{/landlord/css/util.css}">
+    <link rel="stylesheet" type="text/css"  th:href="@{/landlord/css/main.css}">
+    <!--===============================================================================================-->
+  </head>
+  <body>
 
-</body>
-</html>
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <div class="login100-pic js-tilt" data-tilt>
+          <img th:src="@{/landlord/images/img-01.png}" alt="IMG">
+        </div>
+
+        <form class="login100-form validate-form">
+                      <span class="login100-form-title">
+                          Đăng Nhập
+                      </span>
+
+          <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
+            <input class="input100" type="text" id="email" name="email" placeholder="Email">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                              <i class="fa fa-envelope" aria-hidden="true"></i>
+                          </span>
+          </div>
+
+          <div class="wrap-input100 validate-input" data-validate = "Password is required">
+            <input class="input100" type="password"  id="password"  name="pass" placeholder="Password">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+                              <i class="fa fa-lock" aria-hidden="true"></i>
+                          </span>
+          </div>
+
+          <form class="login100-form validate-form" onsubmit="return sendLoginData()">
+            <!-- Các trường dữ liệu ở đây -->
+            <button class="login100-form-btn" type="submit">
+              Đăng Nhập
+            </button>
+          </form>
+
+          <div class="text-center p-t-12">
+            <a class="txt2" href="#">
+              Hãy đăng nhập để đăng bài
+            </a>
+          </div>
+
+          <div class="text-center p-t-136">
+            <a class="txt2" href="#">
+              Chào mừng đến với chúng tôi
+              <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+            </a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+    <script>
+      function sendLoginData() {
+        event.preventDefault();
+
+        // Lấy ra giá trị từ các trường dữ liệu
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Tạo một đối tượng chứa dữ liệu để gửi lên máy chủ
+        const data = {
+          email: email,
+          password: password
+        };
+
+        // Tạo một yêu cầu Fetch
+        fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        })
+                .then(response => response.json())
+                .then(data => {
+                  // Kiểm tra nếu đăng nhập thành công, bạn có thể kiểm tra trạng thái hoặc dữ liệu trả về từ máy chủ
+                  if (data.success) {
+                    // Đăng nhập thành công, chuyển hướng đến trang /leo/home
+                    window.location.href = '/leo/home';
+                  } else {
+                    // Xử lý trường hợp đăng nhập không thành công, hiển thị thông báo hoặc thực hiện hành động phù hợp khác
+                    console.log('Đăng nhập không thành công');
+                  }
+                })
+                .catch(error => {
+                  // Xử lý lỗi nếu có
+                  console.error('Error:', error);
+                });
+      }
+    </script>
+
+
+  <!--===============================================================================================-->
+  <script th:src="@{/landlord/vendor/jquery/jquery-3.2.1.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/landlord/vendor/bootstrap/js/popper.js}"></script>
+  <script th:src="@{/landlord/vendor/bootstrap/js/bootstrap.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/landlord/vendor/select2/select2.min.js}"></script>
+  <!--===============================================================================================-->
+  <script th:src="@{/landlord/vendor/tilt/tilt.jquery.min.js}"></script>
+  <script >
+    $('.js-tilt').tilt({
+      scale: 1.1
+    })
+  </script>
+  <!--===============================================================================================-->
+  <script th:src="@{/landlord/js/main.js}"></script>
+
+  </body>
+  </html>

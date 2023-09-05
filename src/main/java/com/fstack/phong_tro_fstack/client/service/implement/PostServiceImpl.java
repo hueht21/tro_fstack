@@ -1,8 +1,6 @@
 package com.fstack.phong_tro_fstack.client.service.implement;
 
 import com.fstack.phong_tro_fstack.base.converter.PostConverter;
-import com.fstack.phong_tro_fstack.base.dto.PostDTO;
-import com.fstack.phong_tro_fstack.base.entity.PostEntity;
 import com.fstack.phong_tro_fstack.client.output.AreaResponse;
 import com.fstack.phong_tro_fstack.client.output.RoomResponse;
 import com.fstack.phong_tro_fstack.client.output.UserResponse;
@@ -10,12 +8,17 @@ import com.fstack.phong_tro_fstack.client.output.post.PagedPostResponse;
 import com.fstack.phong_tro_fstack.client.output.post.PostResponse;
 import com.fstack.phong_tro_fstack.client.repository.PostRepository;
 import com.fstack.phong_tro_fstack.client.service.PostService;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
-
-import java.util.*;
 
 @Component
 public class PostServiceImpl implements PostService {
@@ -84,15 +87,15 @@ public class PostServiceImpl implements PostService {
 
       Long idPost = (Long) objects[0];
       RoomResponse roomResponse = new RoomResponse();
-      roomResponse.setId((Long) objects[17]);
-      roomResponse.setName(objects[18].toString());
-      roomResponse.setDescription(objects[19].toString());
-      roomResponse.setAcreage((Float) objects[20]);
-      roomResponse.setRentPrice((Float) objects[21]);
-      roomResponse.setElectricService((Float) objects[22]);
-      roomResponse.setWaterService((Float) objects[23]);
-      roomResponse.setImage(objects[24].toString());
-      roomResponse.setVideo(objects[25].toString());
+      roomResponse.setId(Objects.nonNull(objects[17]) ? (Long) objects[17] : null);
+      roomResponse.setName(Objects.nonNull(objects[18]) ? objects[18].toString() : null);
+      roomResponse.setDescription(Objects.nonNull(objects[19]) ? objects[19].toString() : null);
+      roomResponse.setAcreage(Objects.nonNull(objects[20]) ? (Float) objects[20] : null);
+      roomResponse.setRentPrice(Objects.nonNull(objects[21]) ? (Float) objects[21] : null);
+      roomResponse.setElectricService(Objects.nonNull(objects[22]) ? (Float) objects[22] : null);
+      roomResponse.setWaterService(Objects.nonNull(objects[23]) ? (Float) objects[23] : null);
+      roomResponse.setImage(Objects.nonNull(objects[24]) ? objects[24].toString() : null);
+      roomResponse.setVideo(Objects.nonNull(objects[25]) ? objects[25].toString() : null);
 
       if (!map.containsKey(idPost)) {
         List<RoomResponse> roomResponses = new ArrayList<>();
@@ -108,12 +111,8 @@ public class PostServiceImpl implements PostService {
 
     List<PostResponse> result = new ArrayList<>(map.values());
 
-    Collections.sort(result, new Comparator<PostResponse>() {
-      @Override
-      public int compare(PostResponse o1, PostResponse o2) {
-        return o2.getCreatedAt().compareTo(o1.getCreatedAt());
-      }
-    });
+    result.sort(Comparator.comparing(PostResponse::getCreatedAt,
+        Comparator.nullsLast(Comparator.reverseOrder())));
 
     int totalRecordResult = result.size();
     int pageNumberRequest = pageNumber.orElse(1);// số trang cần lấy
