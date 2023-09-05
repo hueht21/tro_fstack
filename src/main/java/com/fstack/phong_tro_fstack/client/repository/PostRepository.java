@@ -32,7 +32,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
       "inner join province prov on a.id_province=prov.id " +
       "inner join ward w on a.id_ward=w.id " +
       "where " +
-      "AND (:idProvince IS NULL OR a.id_province = :idProvince) " +
+      " (:idProvince IS NULL OR a.id_province = :idProvince) " +
       "AND (:idDistrict IS NULL OR a.id_district = :idDistrict) " +
       "AND (:idWard IS NULL OR a.id_ward = :idWard) " +
       "AND (:rentPrice IS NULL OR r.rent_price between :minPrice and :maxPrice) " +
