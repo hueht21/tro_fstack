@@ -10,7 +10,14 @@
     <div class="col-md-3"> <!-- Sử dụng col-md-4 để chiếm 4/12 của hàng -->
       <div class="form-group">
         <label>Số phòng của dãy *</label>
-        <input class="form-control" type="number" name="soPhong" id="soPhong" min="1" value="1">
+        <input class="form-control" type="number" name="soPhong" id="soPhong" min="1" value="1" onchange="updateHiddenField()">
+<script>
+  function updateHiddenField() {
+    const soPhongInput = document.getElementById('soPhong');
+
+console.log(soPhongInput.value);
+  }
+</script>
       </div>
     </div>
 

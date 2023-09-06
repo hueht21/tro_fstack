@@ -28,8 +28,8 @@ public class PostManageController {
   @RequestMapping(value = "/PostNews/save-post-news")
   public ResponseEntity<PostReponseDTOLandLord> savePost(@RequestBody PostReponseDTOLandLord dto,
                                                          HttpSession session) {
-    UserDTOLandLord userDTO = (UserDTOLandLord) session.getAttribute("user");
-    dto.setIdUser((userDTO != null ? userDTO.getId() : 2L));
+    Long idUser = (Long) session.getAttribute("idUser");
+    dto.setIdUser(idUser);
     dto.setThumbnail((String) session.getAttribute("one-image"));
     AreaDTOLandLord areaDTO = areaService.saveArea(dto);
     if(areaDTO.getId()<=0){
