@@ -10,19 +10,10 @@
                    id="payment_from_account" value="account"
                    checked="checked" class="form-check-input"/>
             <label for="payment_from_account" class="form-check-label">
-              Trừ tiền trong tài khoản (Bạn đang có: TK Chính 200.000)
-              <p style="color: red;" class="js-note-outofmoney">Số tiền
-                trong tài khoản của bạn không đủ để thực hiện thanh
-                toán, vui lòng chọn phương thức khác bên dưới</p>
+              Trừ tiền trong tài khoản (Bạn đang có: <span th:text="${balance}">10000</span> VND)
             </label>
           </div>
-          <!--                                                    <div class="form-check js-payment-item js-payment-momo mb-2">-->
-          <!--                                                        <input type="radio" name="payment_method" id="payment_from_momo"-->
-          <!--                                                               value="momo" class="form-check-input">-->
-          <!--                                                        <label for="payment_from_momo" class="form-check-label">-->
-          <!--                                                            Thanh toán qua ví điện tử MOMO-->
-          <!--                                                        </label>-->
-          <!--                                                    </div>-->
+
           <div class="form-check js-payment-item js-payment-bank-transfer mb-2">
             <input type="radio" name="payment_method"
                    id="payment_from_bank_transfer" value="bank_transfer"
@@ -32,7 +23,7 @@
                   class="js-package-title-ck">621599</span> </span>
             </p>
             <p>Số tiền chuyển khoản: <span style="color: red;"
-                                           class="js-package-grand-total">10.000đ</span>
+                                           class="js-package-grand-total">2.000 VND</span>
             </p>
             </label>
           </div>

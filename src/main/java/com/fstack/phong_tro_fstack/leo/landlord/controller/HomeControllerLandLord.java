@@ -40,24 +40,4 @@ public class HomeControllerLandLord {
     modelMap.addAttribute("posts", postDTOs);
     return "landlord/home";
   }
-  @GetMapping({"", "/"})
-  public String homeShowNewss(ModelMap modelMap, HttpSession session, @PathVariable("id") Long id) {
-    UserDTOLandLord user = userService.getUser(id);
-    session.setAttribute("user", user);
-    long idUser = ((UserDTOLandLord) session.getAttribute("user")).getId();
-    List<PostDTOLandLord> postDTOs = postService.getPostAndRateByUser(idUser);
-    CommonLandLord common = new CommonLandLord();
-    List<PostDTOLandLord> updatedPostDTOs = new ArrayList<>();
-    if(Objects.nonNull(postDTOs))  {
-      for (PostDTOLandLord post : postDTOs) {
-        if(Objects.nonNull(post.getThumbnail())){
-          post.setThumbnail(common.geturlthumbnail(post.getThumbnail()));
-          updatedPostDTOs.add(post);
-        }
-      }
-    }
-    postDTOs = updatedPostDTOs;
-    modelMap.addAttribute("posts", postDTOs);
-    return "landlord/home";
-  }
 }

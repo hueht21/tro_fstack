@@ -6,8 +6,10 @@
 
 </div>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const soPhong = document.getElementById('soPhong').value;
+  const hiddenSoPhongInput = document.getElementById('soPhong');
+  hiddenSoPhongInput.addEventListener('change', function () {
+    const soPhong = parseInt(this.value); // Lấy giá trị mới từ trường input ẩn
+
     const container = document.getElementById('chiTietPhongContainer');
     container.innerHTML = ''; // Xóa nội dung cũ
         console.log(soPhong);

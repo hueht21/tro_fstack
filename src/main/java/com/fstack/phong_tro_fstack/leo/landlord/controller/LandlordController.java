@@ -1,14 +1,12 @@
 package com.fstack.phong_tro_fstack.leo.landlord.controller;
 
-import com.fstack.phong_tro_fstack.leo.landlord.base.dto.AreaDTOLandLord;
-import com.fstack.phong_tro_fstack.leo.landlord.base.dto.PostDTOLandLord;
-import com.fstack.phong_tro_fstack.leo.landlord.base.dto.PostRequestDTOLandLord;
-import com.fstack.phong_tro_fstack.leo.landlord.base.dto.RoomDTOLandLord;
+import com.fstack.phong_tro_fstack.leo.landlord.base.dto.*;
 import com.fstack.phong_tro_fstack.leo.landlord.common.CommonLandLord;
 import com.fstack.phong_tro_fstack.leo.landlord.service.AreaServiceLandLord;
 import com.fstack.phong_tro_fstack.leo.landlord.service.PostServiceLandLord;
 import com.fstack.phong_tro_fstack.leo.landlord.service.RoomServiceLandLord;
 import com.fstack.phong_tro_fstack.leo.landlord.service.UserServiceLandLord;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/leo")
@@ -56,7 +55,11 @@ public class LandlordController {
   }
 
   @GetMapping("/post-news")
-  public String post_news() {
+  public String post_news(ModelMap modelMap, HttpSession session) {
+    Long idUser = (Long) session.getAttribute("idUser");
+    UserDTOLandLord user= userService.getUser(idUser);
+      Float balance = Objects.isNull(user.getBalance())  ? 10000 : user.getBalance();
+    modelMap.addAttribute("user",balance);
     return "landlord/post-news";
   }
   @GetMapping("/manage-post")

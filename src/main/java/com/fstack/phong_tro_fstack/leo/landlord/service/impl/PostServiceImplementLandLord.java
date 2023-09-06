@@ -27,7 +27,7 @@ public class PostServiceImplementLandLord implements PostServiceLandLord {
     postDTO.setTitle(dto.getTitle());
     postDTO.setStatus(0);
     postDTO.setRatetingStart(postDTO.getRatetingStart());
-    postDTO.setThumbnail(dto.getThumbnail());
+    postDTO.setNumberDate(5);
     postDTO.setPhoneNumber(dto.getPhoneNumber());
     postDTO.setPhoneZalo(dto.getPhoneZalo());
     postDTO.setCreatedTime(dto.getCreatedTime());
