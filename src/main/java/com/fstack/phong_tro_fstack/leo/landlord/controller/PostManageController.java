@@ -1,50 +1,72 @@
 package com.fstack.phong_tro_fstack.leo.landlord.controller;
 
-import com.fstack.phong_tro_fstack.base.dto.RoomDTO;
-import com.fstack.phong_tro_fstack.base.dto.UserDTO;
-
-import com.fstack.phong_tro_fstack.leo.landlord.dto.AreaDTO;
-import com.fstack.phong_tro_fstack.leo.landlord.service.RoomService;
-import com.fstack.phong_tro_fstack.leo.landlord.service.impl.AreaServiceImplement;
+import com.fstack.phong_tro_fstack.leo.landlord.base.dto.*;
+import com.fstack.phong_tro_fstack.leo.landlord.service.PostServiceLandLord;
+import com.fstack.phong_tro_fstack.leo.landlord.service.RoomServiceLandLord;
+import com.fstack.phong_tro_fstack.leo.landlord.service.impl.AreaServiceImplementLandLord;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
-@RequestMapping("leo")
+@RequestMapping("/leo")
+@AllArgsConstructor
 public class PostManageController {
 
-  @Autowired
-  @Qualifier("areaService")
-  private AreaServiceImplement areaService;
+  private final AreaServiceImplementLandLord areaService;
+  private final RoomServiceLandLord roomService;
+  private final PostServiceLandLord postService;
 
-  @Autowired
-  @Qualifier("roomService")
-  private RoomService roomService;
 
-  @PostMapping(value = "PostNews/save-post-news")
-  public ResponseEntity<?> savePost(@RequestBody AreaDTO areaDTO, HttpSession session) {
-    UserDTO userDTO = (UserDTO) session.getAttribute("user");
-    areaDTO.getPostDTO().setIdUser(userDTO != null ? userDTO.getId() : 2L);
-    areaDTO.getPostDTO().setThumbnail((String) session.getAttribute("one-image"));
-
-    Long areaId = areaService.saveAreaAndGetId(areaDTO);
-    List<RoomDTO> roomDTOList = areaDTO.getRoomDTOList();
-    if (roomDTOList != null && !roomDTOList.isEmpty()) {
-      for (RoomDTO roomDTO : roomDTOList) {
-        roomDTO.setIdArea(areaId);
-        roomDTO.setImage((String) session.getAttribute("list-image"));
-        roomService.saveRoom(roomDTO);
-      }
+  @RequestMapping(value = "/PostNews/save-post-news")
+  public ResponseEntity<PostReponseDTOLandLord> savePost(@RequestBody PostReponseDTOLandLord dto,
+                                                         HttpSession session) {
+    UserDTOLandLord userDTO = (UserDTOLandLord) session.getAttribute("user");
+    dto.setIdUser((userDTO != null ? userDTO.getId() : 2L));
+    dto.setThumbnail((String) session.getAttribute("one-image"));
+    AreaDTOLandLord areaDTO = areaService.saveArea(dto);
+    if(areaDTO.getId()<=0){
+      areaDTO = areaService.saveArea(dto);
+      dto.setIdArea(String.valueOf(areaDTO.getId()));
+    }else{
+      dto.setIdArea(String.valueOf(areaDTO.getId()));
     }
-    return ResponseEntity.ok().build();
+    int i = 1;
+    for (RoomDTOLandLord room : dto.getRoomDTOList()) {
+      String imageUrl = (String) session.getAttribute("list-image" + i);
+      room.setIdArea(Long.valueOf(dto.getIdArea()));
+      room.setImage(imageUrl);
+      i++;
+    }
+    roomService.saveRoom(dto);
+    postService.savePost(dto);
+    return ResponseEntity.ok(dto);
+  }
+
+  @PutMapping(value = "/PostNews/update-post-news")
+  public ResponseEntity<?> UpdatePost(@RequestBody PostReponseDTOLandLord dto,
+      HttpSession session) {
+    long id = Long.parseLong(dto.getIdPost());
+    Long idArea = areaService.getAreaByPostId(id).getId();
+    List<Long> idRooms = roomService.getRoombyPostId(id).stream().map(BaseDTOLandLord::getId).distinct().collect(
+        Collectors.toList());
+    dto.setThumbnail((String) session.getAttribute("one-image"));
+    dto.setIdArea(String.valueOf(idArea));
+    for (int i = 0; i < dto.getRoomDTOList().size(); i++) {
+      dto.getRoomDTOList().get(i).setImage(String.valueOf(session.getAttribute("list-image"+(i+1))));
+      dto.getRoomDTOList().get(i).setId(idRooms.get(i));
+      dto.getRoomDTOList().get(i).setIdArea(idArea);
+    }
+    roomService.saveRoom(dto);
+    postService.savePost(dto);
+    return ResponseEntity.ok(dto);
   }
 
 

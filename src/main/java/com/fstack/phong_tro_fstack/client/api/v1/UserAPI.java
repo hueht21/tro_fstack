@@ -6,6 +6,7 @@ import com.fstack.phong_tro_fstack.client.dto.UserDTO;
 import com.fstack.phong_tro_fstack.client.output.UserRoleResponse;
 import com.fstack.phong_tro_fstack.client.service.UserRoleService;
 import com.fstack.phong_tro_fstack.client.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,12 @@ public class UserAPI {
   private UserRoleService userRoleService;
 
   @PostMapping("/login")
-  public ResponseEntity<?> login(@RequestBody UserDTO dto) {
+  public ResponseEntity<?> login(@RequestBody UserDTO dto, HttpSession session) {
     UserDTO result = userService.findByEmailAndPassword(dto.getEmail(), dto.getPassword());
     if (result.getId() == null) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    }else {
+      session.setAttribute("idUser", result.getId());
     }
     return ResponseEntity.ok(result);
   }

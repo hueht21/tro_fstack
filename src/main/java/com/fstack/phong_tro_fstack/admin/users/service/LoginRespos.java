@@ -9,5 +9,7 @@ public interface LoginRespos extends CrudRepository<UserEntity, Long>{
 	
 	@Query(value = "SELECT id FROM user WHERE email = ? AND password = ?", nativeQuery = true)
 	Long findIDUser(String email, String pass);
+	UserEntity findOneById(Long id);
+
 
 }
