@@ -35,7 +35,7 @@ public class PostController {
       @Param(value = "pageSize") Optional<Integer> pageSize
   ) {
     ModelAndView modelAndView = new ModelAndView("client/posts");
-    PagedPostResponse data = postService.getAllByNumberDateOtherZeroOrderByCreatedAt(
+    PagedPostResponse data = postService.getAllNumberDateOtherZeroAndStatusActive(
         idProvince,
         idDistrict,
         idWard,
@@ -59,7 +59,7 @@ public class PostController {
   ) {
     System.out.println("id post: " + id);
     ModelAndView modelAndView = new ModelAndView("client/detail-post");
-    PostResponse data = postService.getDetailPost(id);
+    PostResponse data = postService.getDetailPostNumberDateOtherZeroAndStatusActive(id);
     modelAndView.addObject("postResponse", data);
     return modelAndView;
   }
