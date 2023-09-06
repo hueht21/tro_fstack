@@ -25,9 +25,12 @@ public class CommonLandLord {
     Gson gson = new Gson();
     List<FileResponseLandLord> imageid = gson.fromJson(json, new TypeToken<List<FileResponseLandLord>>() {
     }.getType());
-    for (FileResponseLandLord fileResponse : imageid) {
-      list.add("https://drive.google.com/uc?id=" + fileResponse.getId());
+    if(Objects.nonNull(imageid)){
+      for (FileResponseLandLord fileResponse : imageid) {
+        list.add("https://drive.google.com/uc?id=" + fileResponse.getId());
+      }
     }
+
     return list;
   }
 }

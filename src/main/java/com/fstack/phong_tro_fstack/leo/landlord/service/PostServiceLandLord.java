@@ -11,7 +11,7 @@ public interface PostServiceLandLord {
 
   PostDTOLandLord getPostById(long id);
 
-  PostDTOLandLord updatePost(PostDTOLandLord postDTO, long id);
+  PostDTOLandLord updatePost(PostReponseDTOLandLord postDTO);
 
   List<PostDTOLandLord> getPostAndRateByUser(long idUser);
 

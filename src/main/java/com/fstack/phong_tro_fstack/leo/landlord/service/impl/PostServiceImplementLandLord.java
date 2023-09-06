@@ -45,17 +45,21 @@ public class PostServiceImplementLandLord implements PostServiceLandLord {
   }
 
   @Override
-  public PostDTOLandLord updatePost(PostDTOLandLord postDTO, long id) {
-    if (postDTO != null) {
-      PostEntityLandLord postEntity = postRepository.findById(id).get();
-      postEntity.setThumbnail(postDTO.getThumbnail());
-      postEntity.setContent(postDTO.getContent());
-      postEntity.setTitle(postDTO.getTitle());
-      postEntity.setStatus(0);
-      postEntity.setPhoneNumber(postDTO.getPhoneNumber());
-      postEntity.setPhoneZalo(postDTO.getPhoneZalo());
-      postDTO = postConverter.toDTO(postEntity);
-      postRepository.save(postEntity);
+  public PostDTOLandLord updatePost(PostReponseDTOLandLord dto) {
+    PostDTOLandLord postDTO = new PostDTOLandLord();
+    if (dto != null) {
+      postDTO.setId(Long.valueOf(dto.getIdPost()));
+      postDTO.setThumbnail(dto.getThumbnail());
+      postDTO.setContent(dto.getContent());
+      postDTO.setTitle(dto.getTitle());
+      postDTO.setStatus(0);
+      postDTO.setRatetingStart(postDTO.getRatetingStart());
+      postDTO.setPhoneNumber(dto.getPhoneNumber());
+      postDTO.setPhoneZalo(dto.getPhoneZalo());
+      postDTO.setCreatedTime(dto.getCreatedTime());
+      postDTO.setIdArea(Long.valueOf(dto.getIdArea()));
+      postDTO.setIdUser(dto.getIdUser());
+      postRepository.save(postConverter.toEntity(postDTO));
     }
     return postDTO;
   }

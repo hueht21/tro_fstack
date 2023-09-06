@@ -26,7 +26,7 @@ public interface PostRepositoryLandLordLandLord extends JpaRepository<PostEntity
           " FROM PostEntityLandLord p " +
           " INNER JOIN AreaEntityLandLord a on p.areaId=a.id" +
           " LEFT JOIN RateEntityLandLord r on r.areaId=a.id "  +
-          " WHERE p.userId= :idUser " +
+          " WHERE p.userId= :idUser AND p.status in (1,0)" +
           " GROUP BY p.id, p.content, p.status, p.title, p.thumbnail")
   List<Object[]> getPostandRatebyUser(@Param("idUser") long idUser);
 

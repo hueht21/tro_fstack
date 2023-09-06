@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -30,9 +31,9 @@ public class AreaServiceImplementLandLord implements AreaServiceLandLord {
     areaEntity.setLongitude(dto.getLongitude());
     areaEntity.setLatitude(dto.getLatitude());
 
-    areaEntity.setProvinceId(String.format("%02d", Long.parseLong(dto.getIdProvince())));
-    areaEntity.setDistrictId(String.format("%03d",Long.parseLong(dto.getIdDistrict())));
-    areaEntity.setWardId(String.format("%05d",Long.parseLong(dto.getIdWard())));
+    areaEntity.setProvinceId(String.format("%02d", Long.valueOf(dto.getIdProvince())));
+    areaEntity.setDistrictId(String.format("%03d",Long.valueOf(dto.getIdDistrict())));
+    areaEntity.setWardId(String.format("%05d",Long.valueOf(dto.getIdWard())));
     areaEntity.setExactAddress(dto.getExactAddress());
     return areaConverter.toDTO( areaRepository.saveAndFlush(areaEntity));
   }
@@ -45,23 +46,19 @@ public class AreaServiceImplementLandLord implements AreaServiceLandLord {
   }
 
   @Override
-  public AreaDTOLandLord updateArea(AreaDTOLandLord areaDTO, long id) {
-    if (areaDTO != null) {
-      AreaEntityLandLord areaEntity = areaRepository.getAreaByPostId(id);
-      if (areaEntity != null) {
-        areaEntity.setName(areaDTO.getName());
-        areaEntity.setLongitude(areaDTO.getLongitude());
-        areaEntity.setLongitude(areaDTO.getLongitude());
-        areaEntity.setExactAddress(areaDTO.getExactAddress());
-        areaEntity.setLatitude(areaDTO.getLatitude());
-        areaEntity.setProvinceId(String.format("%02d", Long.parseLong(areaDTO.getIdProvince())));
-        areaEntity.setDistrictId(String.format("%03d",Long.parseLong(areaDTO.getIdDistrict())));
-        areaEntity.setWardId(String.format("%05d",Long.parseLong(areaDTO.getIdWard())));
-        areaRepository.save(areaEntity);
-      }
+  public AreaDTOLandLord updateArea(PostReponseDTOLandLord dto) {
+    AreaEntityLandLord areaEntity=new AreaEntityLandLord();
+    areaEntity.setId(Long.valueOf(dto.getIdArea()));
+      areaEntity.setName(dto.getName());
+      areaEntity.setLongitude(dto.getLongitude());
+      areaEntity.setLatitude(dto.getLatitude());
+
+      areaEntity.setProvinceId(String.format("%02d", Long.valueOf(dto.getIdProvince())));
+    areaEntity.setDistrictId(String.format("%03d", Objects.nonNull(dto.getIdDistrict()) ? Long.parseLong(dto.getIdDistrict()) : 4));
+      areaEntity.setWardId(String.format("%05d",Objects.nonNull(dto.getIdWard()) ? Long.parseLong(dto.getIdWard()) : 124));
+      areaEntity.setExactAddress(dto.getExactAddress());
+      return areaConverter.toDTO(areaRepository.save(areaEntity));
     }
-    return areaDTO;
-  }
 
   @Override
   public List<AreaDTOLandLord> getAllArea() {
