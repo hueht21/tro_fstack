@@ -1,7 +1,7 @@
 $(document).ready(function () {
   $('#acreage-range').slider();
   $.ajax({
-    url: "api/v1/rest/post",
+    url: "api/v1/rest/post/search",
     type: "GET",
     success: function (response) {
       renderPosts(response);
@@ -120,7 +120,7 @@ $(document).ready(function () {
     console.log(minAcreage);
     console.log(maxAcreage);
     $.ajax({
-      url: "/api/v1/rest/post",
+      url: "/api/v1/rest/post/search",
       type: "GET",
       data: {
         ...(idProvince && {idProvince}),

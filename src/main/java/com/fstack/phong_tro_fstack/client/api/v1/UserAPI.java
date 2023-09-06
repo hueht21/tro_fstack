@@ -40,9 +40,10 @@ public class UserAPI {
   }
 
   @PostMapping("/register")
-  public ResponseEntity<?> register(@RequestBody UserDTO dto) {
+  public ResponseEntity<?> register(@RequestBody UserDTO dto, HttpSession session) {
     UserRoleResponse result = userService.save(dto);
     if (result != null) {
+      session.setAttribute("idUser", result.getIdUser());
       return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
