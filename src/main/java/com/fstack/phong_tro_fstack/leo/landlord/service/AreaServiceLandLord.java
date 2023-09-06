@@ -11,7 +11,7 @@ public interface AreaServiceLandLord {
 
   AreaDTOLandLord getArea(long id);
 
-  AreaDTOLandLord updateArea(AreaDTOLandLord areaDTO, long id);
+  AreaDTOLandLord updateArea(PostReponseDTOLandLord dto);
 
   AreaDTOLandLord getAreaByPostId(Long postId);
 

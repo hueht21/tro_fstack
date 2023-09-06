@@ -64,8 +64,9 @@ public class PostManageController {
       dto.getRoomDTOList().get(i).setId(idRooms.get(i));
       dto.getRoomDTOList().get(i).setIdArea(idArea);
     }
-    roomService.saveRoom(dto);
-    postService.savePost(dto);
+    roomService.updateRoom(dto);
+    postService.updatePost(dto);
+    areaService.updateArea(dto);
     return ResponseEntity.ok(dto);
   }
 
